@@ -14,5 +14,10 @@
             this.color = color;
             this.movementQuantity = 0;
         }
+
+        public void increaseMovementNumber()
+        {
+            movementQuantity++;
+        }
     }
 }

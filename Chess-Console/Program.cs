@@ -11,19 +11,30 @@ namespace Chess_Console
             
             try
             {
-                Board board = new Board(8, 8);
+                ChessMatch match = new ChessMatch();
 
-                board.placeApiece(new Tower(board, Color.BLACK), new Position(0, 0));
-                board.placeApiece(new Tower(board, Color.BLACK), new Position(1, 3));
-                board.placeApiece(new King(board, Color.BLACK), new Position(2, 4));
+                while (!match.finished)
+                {
+                    Console.Clear();
+                    Window.printBoard(match.board);
 
-                board.placeApiece(new Tower(board, Color.WHITE), new Position(0, 5));
-                Window.printBoard(board);
+                    Console.WriteLine();
+                    Console.Write("Origem: ");
+                    Position origin = Window.readChessPosition().toPosition();
+
+                    Console.Write("Destino: ");
+                    Position destination = Window.readChessPosition().toPosition();
+
+                    match.executeMovement(origin, destination);
+                }
+                
 
             } catch (BoardException e)
             {
                 Console.WriteLine(e.Message);
             }
+
+            Console.ReadLine();
            
         }
     }
