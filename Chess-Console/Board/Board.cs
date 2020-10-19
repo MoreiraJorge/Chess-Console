@@ -19,5 +19,12 @@ namespace Chess_Console.board
         {
             return pieces[line, column];
         }
+
+        public void placeApiece(Piece p , Position pos)
+        {
+            pieces[pos.line, pos.column] = p;
+            p.position = pos;
+        }
+
     }
 }
