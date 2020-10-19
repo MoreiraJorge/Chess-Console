@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Chess_Console.board
+namespace board
 {
     class BoardException : Exception
     {

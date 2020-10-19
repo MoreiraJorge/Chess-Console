@@ -1,6 +1,6 @@
-﻿using Chess_Console.board;
+﻿using board;
 
-namespace Chess_Console.chess
+namespace chess
 {
     class King : Piece
     {

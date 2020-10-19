@@ -1,4 +1,4 @@
-﻿using Chess_Console.board;
+﻿using board;
 using System;
 
 namespace Chess_Console

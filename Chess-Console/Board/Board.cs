@@ -1,6 +1,4 @@
-﻿using System.Security.Authentication.ExtendedProtection;
-
-namespace Chess_Console.board
+﻿namespace board
 {
     class Board
     {
