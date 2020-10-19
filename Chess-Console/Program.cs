@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chess_Console.board;
+using System;
 
 namespace Chess_Console
 {
@@ -6,7 +7,9 @@ namespace Chess_Console
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Board board = new Board(8, 8);
+
+            Console.ReadLine();
         }
     }
 }
