@@ -8,25 +8,43 @@ namespace Chess_Console
     {
         public static void printBoard(Board board)
         {
-            for(int i=0; i < board.lines; i++)
+            for (int i = 0; i < board.lines; i++)
             {
                 Console.Write(8 - i + " ");
-                for(int j=0; j < board.columns; j++)
+                for (int j = 0; j < board.columns; j++)
                 {
-                    if (board.piece(i, j) == null)
-                    {
-                        Console.Write("- ");
-                    }
-                    else
-                    {
-                        printPiece(board.piece(i, j));
-                        Console.Write(" ");
-                    }
+                    printPiece(board.piece(i, j));
                 }
                 Console.WriteLine();
             }
             Console.WriteLine("  a b c d e f g h");
 
+        }
+
+        public static void printBoard(Board board, bool[,] possiblePositions)
+        {
+            ConsoleColor OriginalBackground = Console.BackgroundColor;
+            ConsoleColor NewBackground = ConsoleColor.DarkGray;
+
+            for (int i = 0; i < board.lines; i++)
+            {
+                Console.Write(8 - i + " ");
+                for (int j = 0; j < board.columns; j++)
+                {
+                    if (possiblePositions[i, j])
+                    {
+                        Console.BackgroundColor = NewBackground;
+                    } else
+                    {
+                        Console.BackgroundColor = OriginalBackground;
+                    }
+                    printPiece(board.piece(i, j));
+                    Console.BackgroundColor = OriginalBackground;
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine("  a b c d e f g h");
+            Console.BackgroundColor = OriginalBackground;
         }
 
         public static PositionChess readChessPosition()
@@ -39,15 +57,24 @@ namespace Chess_Console
 
         public static void printPiece(Piece piece)
         {
-            if (piece.color == Color.WHITE)
+            if (piece == null)
             {
-                Console.Write(piece);
-            } else
+                Console.Write("- ");
+            }
+            else
             {
-                ConsoleColor aux = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write(piece);
-                Console.ForegroundColor = aux;
+                if (piece.color == Color.WHITE)
+                {
+                    Console.Write(piece);
+                }
+                else
+                {
+                    ConsoleColor aux = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write(piece);
+                    Console.ForegroundColor = aux;
+                }
+                Console.Write(" ");
             }
         }
     }

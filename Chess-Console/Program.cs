@@ -22,6 +22,12 @@ namespace Chess_Console
                     Console.Write("Origem: ");
                     Position origin = Window.readChessPosition().toPosition();
 
+                    bool[,] possiblePositions = match.board.piece(origin).possibleMovements();
+
+                    Console.Clear();
+                    Window.printBoard(match.board, possiblePositions);
+
+                    Console.WriteLine();
                     Console.Write("Destino: ");
                     Position destination = Window.readChessPosition().toPosition();
 
