@@ -2,6 +2,7 @@
 using chess;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Chess_Console
 {
@@ -14,8 +15,23 @@ namespace Chess_Console
             printCaptured(match);
             Console.WriteLine();
             Console.WriteLine("Truno: " + match.turn);
-            Console.WriteLine("Aguarda jogada:" + match.currentPlayer);
+            Console.WriteLine("Aguarda jogada: " + getTheColor(match));
+            if (match.xeque)
+            {
+                Console.WriteLine("XEQUE!");
+            }
+        }
 
+        private static string getTheColor(ChessMatch match)
+        {
+            if (match.currentPlayer == Color.BLACK)
+            {
+                return "Preta";
+            }
+            else
+            {
+                return "Branca";
+            }
         }
 
         public static void printCaptured(ChessMatch match)
@@ -70,7 +86,8 @@ namespace Chess_Console
                     if (possiblePositions[i, j])
                     {
                         Console.BackgroundColor = NewBackground;
-                    } else
+                    }
+                    else
                     {
                         Console.BackgroundColor = OriginalBackground;
                     }

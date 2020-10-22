@@ -11,6 +11,7 @@ namespace chess
         public bool finished { get; private set; }
         private HashSet<Piece> pieces;
         private HashSet<Piece> captured;
+        public bool xeque { get; private set; }
 
         public ChessMatch()
         {
@@ -18,12 +19,13 @@ namespace chess
             turn = 1;
             currentPlayer = Color.WHITE;
             finished = false;
+            xeque = false;
             pieces = new HashSet<Piece>();
             captured = new HashSet<Piece>();
             placePieces();
         }
 
-        public void executeMovement(Position origin, Position destination)
+        public Piece executeMovement(Position origin, Position destination)
         {
             Piece p = board.removePiece(origin);
             p.increaseMovementNumber();
@@ -34,11 +36,39 @@ namespace chess
             {
                 captured.Add(capturedPiece);
             }
+            return capturedPiece;
+        }
+
+        public void undoMove(Position origin, Position destination, Piece capturedPiece)
+        {
+            Piece p = board.removePiece(destination);
+            p.decreaseMovementNumber();
+            if (capturedPiece != null)
+            {
+                board.placeApiece(capturedPiece, destination);
+                captured.Remove(capturedPiece);
+            }
+            board.placeApiece(p, origin);
         }
 
         public void play(Position origin, Position destination)
         {
-            executeMovement(origin, destination);
+            Piece capturedPiece = executeMovement(origin, destination);
+
+            if (isInXeque(currentPlayer))
+            {
+                undoMove(origin, destination, capturedPiece);
+                throw new BoardException("Não se pode colocar em xeque!");
+            }
+
+            if (isInXeque(enemy(currentPlayer)))
+            {
+                xeque = true;
+            } else
+            {
+                xeque = false;
+            }
+
             turn++;
             changePlayer();
         }
@@ -109,6 +139,50 @@ namespace chess
             }
             aux.ExceptWith(capturedPieces(color));
             return aux;
+        }
+
+        private Color enemy(Color color)
+        {
+            if (color == Color.WHITE)
+            {
+                return Color.BLACK;
+            }
+            else
+            {
+                return Color.WHITE;
+            }
+        }
+
+        private Piece king(Color color)
+        {
+            foreach (Piece x in gamePieces(color))
+            {
+                if (x is King)
+                {
+                    return x;
+                }
+            }
+            return null;
+        }
+
+        public bool isInXeque(Color color)
+        {
+            Piece R = king(color);
+
+            if (R == null)
+            {
+                throw new BoardException("Não tem rei da cor" + color + "no tabuleiro!");
+            }
+
+            foreach (Piece x in gamePieces(enemy(color)))
+            {
+                bool[,] mat = x.possibleMovements();
+                if (mat[R.position.line, R.position.column])
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void placeNewPiece(char column, int line, Piece piece)
