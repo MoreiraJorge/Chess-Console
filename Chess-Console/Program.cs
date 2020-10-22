@@ -8,40 +8,55 @@ namespace Chess_Console
     {
         static void Main(string[] args)
         {
-            
+
             try
             {
                 ChessMatch match = new ChessMatch();
 
                 while (!match.finished)
                 {
-                    Console.Clear();
-                    Window.printBoard(match.board);
+                    try
+                    {
+                        Console.Clear();
+                        Window.printBoard(match.board);
+                        Console.WriteLine();
+                        Console.WriteLine("Truno" + match.turn);
+                        Console.WriteLine("Aguarda jogada:" + match.currentPlayer);
 
-                    Console.WriteLine();
-                    Console.Write("Origem: ");
-                    Position origin = Window.readChessPosition().toPosition();
 
-                    bool[,] possiblePositions = match.board.piece(origin).possibleMovements();
+                        Console.WriteLine();
+                        Console.Write("Origem: ");
+                        Position origin = Window.readChessPosition().toPosition();
+                        match.validateOriginPosition(origin);
 
-                    Console.Clear();
-                    Window.printBoard(match.board, possiblePositions);
+                        bool[,] possiblePositions = match.board.piece(origin).possibleMovements();
 
-                    Console.WriteLine();
-                    Console.Write("Destino: ");
-                    Position destination = Window.readChessPosition().toPosition();
+                        Console.Clear();
+                        Window.printBoard(match.board, possiblePositions);
 
-                    match.executeMovement(origin, destination);
+                        Console.WriteLine();
+                        Console.Write("Destino: ");
+                        Position destination = Window.readChessPosition().toPosition();
+                        match.validateDestinationPosition(origin, destination);
+
+                        match.play(origin, destination);
+                    }
+                    catch (BoardException e)
+                    {
+                        Console.WriteLine(e.Message);
+                        Console.ReadLine();
+                    }
                 }
-                
 
-            } catch (BoardException e)
+
+            }
+            catch (BoardException e)
             {
                 Console.WriteLine(e.Message);
             }
 
             Console.ReadLine();
-           
+
         }
     }
 }

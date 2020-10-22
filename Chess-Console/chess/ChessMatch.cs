@@ -1,14 +1,12 @@
 ﻿using board;
-using Microsoft.VisualBasic;
-using System.Dynamic;
 
 namespace chess
 {
     class ChessMatch
     {
         public Board board { get; private set; }
-        private int turn;
-        private Color currentPlayer;
+        public int turn { get; private set; }
+        public Color currentPlayer { get; private set; }
         public bool finished{ get; private set;}
 
         public ChessMatch()
@@ -26,6 +24,51 @@ namespace chess
             p.increaseMovementNumber();
             Piece capturedPiece = board.removePiece(destination);
             board.placeApiece(p, destination);
+        }
+
+        public void play(Position origin, Position destination)
+        {
+            executeMovement(origin, destination);
+            turn++;
+            changePlayer();
+        }
+
+        public void validateOriginPosition(Position pos)
+        {
+            if(board.piece(pos) == null)
+            {
+                throw new BoardException("Não existe peça na posição escolhida!");
+            }
+
+            if(currentPlayer != board.piece(pos).color)
+            {
+                throw new BoardException("A peça de origem nao é sua!");
+            }
+
+            if (!board.piece(pos).hasPossibleMovements())
+            {
+                throw new BoardException("Não há movimentos possíveis para a peça de origem escolhida!");
+            }
+        }
+
+        public void validateDestinationPosition(Position origin, Position destination)
+        {
+            if (!board.piece(origin).canMoveToDestination(destination))
+            {
+                throw new BoardException("Posição de destino inválida!");
+            }
+        }
+
+
+        private void changePlayer()
+        {
+            if(currentPlayer == Color.WHITE)
+            {
+                currentPlayer = Color.BLACK;
+            } else
+            {
+                currentPlayer = Color.WHITE;
+            }
         }
 
         private void placePieces()
