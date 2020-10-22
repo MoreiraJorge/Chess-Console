@@ -2,7 +2,6 @@
 using chess;
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace Chess_Console
 {
@@ -15,11 +14,22 @@ namespace Chess_Console
             printCaptured(match);
             Console.WriteLine();
             Console.WriteLine("Truno: " + match.turn);
-            Console.WriteLine("Aguarda jogada: " + getTheColor(match));
-            if (match.xeque)
+
+            if (!match.finished)
             {
-                Console.WriteLine("XEQUE!");
+                Console.WriteLine("Aguarda jogada: " + getTheColor(match));
+                if (match.xeque)
+                {
+                    Console.WriteLine("XEQUE!");
+                }
             }
+            else
+            {
+                Console.WriteLine("XEQUEMATE!");
+                Console.WriteLine("Vencedor: " + match.currentPlayer);
+            }
+
+            
         }
 
         private static string getTheColor(ChessMatch match)

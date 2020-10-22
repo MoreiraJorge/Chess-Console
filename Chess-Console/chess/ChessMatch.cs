@@ -69,8 +69,15 @@ namespace chess
                 xeque = false;
             }
 
-            turn++;
-            changePlayer();
+            if (testXequeMate(enemy(currentPlayer)))
+            {
+                finished = true;
+            }
+            else
+            {
+                turn++;
+                changePlayer();
+            }
         }
 
         public void validateOriginPosition(Position pos)
@@ -183,6 +190,38 @@ namespace chess
                 }
             }
             return false;
+        }
+
+        public bool testXequeMate(Color color)
+        {
+            if (!isInXeque(color))
+            {
+                return false;
+            }
+
+            foreach(Piece x in gamePieces(color))
+            {
+                bool[,] mat = x.possibleMovements();
+                for(int i = 0; i < board.lines; i++)
+                {
+                    for (int j = 0; j < board.lines; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Position origin = x.position;
+                            Position destination = new Position(i, j);
+                            Piece capturedPiece = executeMovement(origin, destination);
+                            bool testXeque = isInXeque(color);
+                            undoMove(origin, destination, capturedPiece);
+                            if (!testXeque)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
         public void placeNewPiece(char column, int line, Piece piece)
