@@ -18,10 +18,7 @@ namespace Chess_Console
                     try
                     {
                         Console.Clear();
-                        Window.printBoard(match.board);
-                        Console.WriteLine();
-                        Console.WriteLine("Truno" + match.turn);
-                        Console.WriteLine("Aguarda jogada:" + match.currentPlayer);
+                        Window.printMatch(match);
 
 
                         Console.WriteLine();

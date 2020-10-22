@@ -1,11 +1,47 @@
 ﻿using board;
 using chess;
 using System;
+using System.Collections.Generic;
 
 namespace Chess_Console
 {
     class Window
     {
+        public static void printMatch(ChessMatch match)
+        {
+            printBoard(match.board);
+            Console.WriteLine();
+            printCaptured(match);
+            Console.WriteLine();
+            Console.WriteLine("Truno: " + match.turn);
+            Console.WriteLine("Aguarda jogada:" + match.currentPlayer);
+
+        }
+
+        public static void printCaptured(ChessMatch match)
+        {
+            Console.WriteLine("Peças capturadas");
+            Console.Write("Brancas: ");
+            printSet(match.capturedPieces(Color.WHITE));
+            Console.WriteLine();
+            Console.Write("Pretas: ");
+            ConsoleColor aux = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            printSet(match.capturedPieces(Color.BLACK));
+            Console.ForegroundColor = aux;
+            Console.WriteLine();
+        }
+
+        public static void printSet(HashSet<Piece> set)
+        {
+            Console.Write("[");
+            foreach (Piece x in set)
+            {
+                Console.Write(x + " ");
+            }
+            Console.Write("]");
+        }
+
         public static void printBoard(Board board)
         {
             for (int i = 0; i < board.lines; i++)
