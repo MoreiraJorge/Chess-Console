@@ -63,21 +63,21 @@ namespace Chess_Console.chess
                 }
 
                 // #jogadaespecial en passant
-                /*
+                
                 if (position.line == 3)
                 {
                     Position left = new Position(position.line, position.column - 1);
-                    if (board.validPosition(left) && hasEnemy(left) && board.piece(left) == match.vulneravelEnPassant)
+                    if (board.validPosition(left) && hasEnemy(left) && board.piece(left) == match.enPassantVulnerable)
                     {
                         mat[left.line - 1, left.column] = true;
                     }
                     Position right = new Position(position.line, position.column + 1);
-                    if (board.validPosition(right) && hasEnemy(right) && board.piece(right) == match.vulneravelEnPassant)
+                    if (board.validPosition(right) && hasEnemy(right) && board.piece(right) == match.enPassantVulnerable)
                     {
                         mat[right.line - 1, right.column] = true;
                     }
                 }
-                */
+                
             }
             else
             {
@@ -104,21 +104,21 @@ namespace Chess_Console.chess
                 }
 
                 // #jogadaespecial en passant
-                /*
+                
                 if (position.line == 4)
                 {
                     Position left = new Position(position.line, position.column - 1);
-                    if (board.validPosition(left) && hasEnemy(left) && board.piece(left) == match.vulneravelEnPassant)
+                    if (board.validPosition(left) && hasEnemy(left) && board.piece(left) == match.enPassantVulnerable)
                     {
                         mat[left.line + 1, left.column] = true;
                     }
                     Position right = new Position(position.line, position.column + 1);
-                    if (board.validPosition(right) && hasEnemy(right) && board.piece(right) == match.vulneravelEnPassant)
+                    if (board.validPosition(right) && hasEnemy(right) && board.piece(right) == match.enPassantVulnerable)
                     {
                         mat[right.line + 1, right.column] = true;
                     }
                 }
-                */
+                
             }
 
             return mat;

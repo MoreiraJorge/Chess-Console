@@ -13,6 +13,7 @@ namespace chess
         private HashSet<Piece> pieces;
         private HashSet<Piece> captured;
         public bool xeque { get; private set; }
+        public Piece enPassantVulnerable { get; private set; }
 
         public ChessMatch()
         {
@@ -21,6 +22,7 @@ namespace chess
             currentPlayer = Color.WHITE;
             finished = false;
             xeque = false;
+            enPassantVulnerable = null;
             pieces = new HashSet<Piece>();
             captured = new HashSet<Piece>();
             placePieces();
@@ -57,6 +59,25 @@ namespace chess
                 board.placeApiece(T, destinastionT);
             }
 
+            // #jogadaespecial en passant
+            if (p is Pawn)
+            {
+                if (origin.column != destination.column && capturedPiece == null)
+                {
+                    Position posP;
+                    if (p.color == Color.WHITE)
+                    {
+                        posP = new Position(destination.line + 1, destination.column);
+                    }
+                    else
+                    {
+                        posP = new Position(destination.line - 1, destination.column);
+                    }
+                    capturedPiece = board.removePiece(posP);
+                    captured.Add(capturedPiece);
+                }
+            }
+
             return capturedPiece;
         }
 
@@ -90,6 +111,25 @@ namespace chess
                 T.decreaseMovementNumber();
                 board.placeApiece(T, originT);
             }
+
+            // #jogadaespecial en passant
+            if (p is Pawn)
+            {
+                if (origin.column != destination.column && capturedPiece == enPassantVulnerable)
+                {
+                    Piece peao = board.removePiece(destination);
+                    Position posP;
+                    if (p.color == Color.WHITE)
+                    {
+                        posP = new Position(3, destination.column);
+                    }
+                    else
+                    {
+                        posP = new Position(4, destination.column);
+                    }
+                    board.placeApiece(peao, posP);
+                }
+            }
         }
 
         public void play(Position origin, Position destination)
@@ -118,6 +158,17 @@ namespace chess
             {
                 turn++;
                 changePlayer();
+            }
+
+            Piece p = board.piece(destination);
+            // #jogadaespecial en passant
+            if (p is Pawn && (destination.line == origin.line - 2 || destination.line == origin.line + 2))
+            {
+                enPassantVulnerable = p;
+            }
+            else
+            {
+                enPassantVulnerable = null;
             }
         }
 
