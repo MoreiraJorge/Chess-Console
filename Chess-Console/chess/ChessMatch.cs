@@ -1,4 +1,5 @@
 ﻿using board;
+using Chess_Console.chess;
 using System.Collections.Generic;
 
 namespace chess
@@ -31,11 +32,31 @@ namespace chess
             p.increaseMovementNumber();
             Piece capturedPiece = board.removePiece(destination);
             board.placeApiece(p, destination);
-
             if (capturedPiece != null)
             {
                 captured.Add(capturedPiece);
             }
+
+            // #jogadaespecial roque pequeno
+            if (p is King && destination.column == origin.column + 2)
+            {
+                Position originT = new Position(origin.line, origin.column + 3);
+                Position destinastionT = new Position(origin.line, origin.column + 1);
+                Piece T = board.removePiece(originT);
+                T.increaseMovementNumber();
+                board.placeApiece(T, destinastionT);
+            }
+
+            // #jogadaespecial roque grande
+            if (p is King && destination.column == origin.column - 2)
+            {
+                Position originT = new Position(origin.line, origin.column - 4);
+                Position destinastionT = new Position(origin.line, origin.column - 1);
+                Piece T = board.removePiece(originT);
+                T.increaseMovementNumber();
+                board.placeApiece(T, destinastionT);
+            }
+
             return capturedPiece;
         }
 
@@ -49,6 +70,26 @@ namespace chess
                 captured.Remove(capturedPiece);
             }
             board.placeApiece(p, origin);
+
+            // #jogadaespecial roque pequeno
+            if (p is King && destination.column == origin.column + 2)
+            {
+                Position originT = new Position(origin.line, origin.column + 3);
+                Position destinastionT = new Position(origin.line, origin.column + 1);
+                Piece T = board.removePiece(destinastionT);
+                T.decreaseMovementNumber();
+                board.placeApiece(T, originT);
+            }
+
+            // #jogadaespecial roque grande
+            if (p is King && destination.column == origin.column - 2)
+            {
+                Position originT = new Position(origin.line, origin.column - 4);
+                Position destinastionT = new Position(origin.line, origin.column - 1);
+                Piece T = board.removePiece(destinastionT);
+                T.decreaseMovementNumber();
+                board.placeApiece(T, originT);
+            }
         }
 
         public void play(Position origin, Position destination)
@@ -232,19 +273,39 @@ namespace chess
 
         private void placePieces()
         {
-            placeNewPiece('c', 1, new Tower(board, Color.WHITE));
-            placeNewPiece('c', 2, new Tower(board, Color.WHITE));
-            placeNewPiece('d', 2, new Tower(board, Color.WHITE));
-            placeNewPiece('e', 2, new Tower(board, Color.WHITE));
-            placeNewPiece('e', 1, new Tower(board, Color.WHITE));
-            placeNewPiece('d', 1, new King(board, Color.WHITE));
+            placeNewPiece('a', 1, new Tower(board, Color.WHITE));
+            placeNewPiece('b', 1, new Horse(board, Color.WHITE));
+            placeNewPiece('c', 1, new Bishop(board, Color.WHITE));
+            placeNewPiece('d', 1, new Queen(board, Color.WHITE));
+            placeNewPiece('e', 1, new King(board, Color.WHITE, this));
+            placeNewPiece('f', 1, new Bishop(board, Color.WHITE));
+            placeNewPiece('g', 1, new Horse(board, Color.WHITE));
+            placeNewPiece('h', 1, new Tower(board, Color.WHITE));
+            placeNewPiece('a', 2, new Pawn(board, Color.WHITE, this));
+            placeNewPiece('b', 2, new Pawn(board, Color.WHITE, this));
+            placeNewPiece('c', 2, new Pawn(board, Color.WHITE, this));
+            placeNewPiece('d', 2, new Pawn(board, Color.WHITE, this));
+            placeNewPiece('e', 2, new Pawn(board, Color.WHITE, this));
+            placeNewPiece('f', 2, new Pawn(board, Color.WHITE, this));
+            placeNewPiece('g', 2, new Pawn(board, Color.WHITE, this));
+            placeNewPiece('h', 2, new Pawn(board, Color.WHITE, this));
 
-            placeNewPiece('c', 7, new Tower(board, Color.BLACK));
-            placeNewPiece('c', 8, new Tower(board, Color.BLACK));
-            placeNewPiece('d', 7, new Tower(board, Color.BLACK));
-            placeNewPiece('e', 7, new Tower(board, Color.BLACK));
-            placeNewPiece('e', 8, new Tower(board, Color.BLACK));
-            placeNewPiece('d', 8, new King(board, Color.BLACK));
+            placeNewPiece('a', 8, new Tower(board, Color.BLACK));
+            placeNewPiece('b', 8, new Horse(board, Color.BLACK));
+            placeNewPiece('c', 8, new Bishop(board, Color.BLACK));
+            placeNewPiece('d', 8, new Queen(board, Color.BLACK));
+            placeNewPiece('e', 8, new King(board, Color.BLACK, this));
+            placeNewPiece('f', 8, new Bishop(board, Color.BLACK));
+            placeNewPiece('g', 8, new Horse(board, Color.BLACK));
+            placeNewPiece('h', 8, new Tower(board, Color.BLACK));
+            placeNewPiece('a', 7, new Pawn(board, Color.BLACK, this));
+            placeNewPiece('b', 7, new Pawn(board, Color.BLACK, this));
+            placeNewPiece('c', 7, new Pawn(board, Color.BLACK, this));
+            placeNewPiece('d', 7, new Pawn(board, Color.BLACK, this));
+            placeNewPiece('e', 7, new Pawn(board, Color.BLACK, this));
+            placeNewPiece('f', 7, new Pawn(board, Color.BLACK, this));
+            placeNewPiece('g', 7, new Pawn(board, Color.BLACK, this));
+            placeNewPiece('h', 7, new Pawn(board, Color.BLACK, this));
 
         }
     }
