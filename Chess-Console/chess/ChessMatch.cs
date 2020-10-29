@@ -142,6 +142,21 @@ namespace chess
                 throw new BoardException("Não se pode colocar em xeque!");
             }
 
+            Piece p = board.piece(destination);
+
+            // #jogadaespecial promocao
+            if (p is Pawn)
+            {
+                if ((p.color == Color.WHITE && destination.line == 0) || (p.color == Color.BLACK && destination.line == 7))
+                {
+                    p = board.removePiece(destination);
+                    pieces.Remove(p);
+                    Piece queen = new Queen(board, p.color);
+                    board.placeApiece(queen, destination);
+                    pieces.Add(queen);
+                }
+            }
+
             if (isInXeque(enemy(currentPlayer)))
             {
                 xeque = true;
@@ -160,7 +175,7 @@ namespace chess
                 changePlayer();
             }
 
-            Piece p = board.piece(destination);
+            
             // #jogadaespecial en passant
             if (p is Pawn && (destination.line == origin.line - 2 || destination.line == origin.line + 2))
             {
